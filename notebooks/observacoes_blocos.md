@@ -79,7 +79,7 @@ Este arquivo descreve o que cada bloco (célula) do notebook [`deteccao_fraudes.
 ## 8. Modelos finais e avaliação única no teste (células 53–58)
 
 - **Célula 53 (Markdown)** — Define que os modelos serão reajustados em todo o treino e avaliados uma única vez no teste, com o limiar selecionado na validação para o modelo otimizado.
-- **Célula 54 (código)** — Recalcula o peso final (≈578,16), clona o melhor XGBoost do GridSearchCV e reajusta LR, RF e XGBoost em `X_train`.
+- **Célula 54 (código)** — Recalcula o peso final no treino completo (199.020 normais / 344 fraudes ≈ 578,55), clona o melhor XGBoost do GridSearchCV e reajusta LR, RF e XGBoost em `X_train`.
 - **Célula 55 (código)** — Tabela oficial no teste: RF (precisão 0,9098; recall 0,7500; F1 0,8222; AUC 0,9429; AP 0,8101), XGBoost GridSearchCV (0,2577; 0,8514; 0,3956; 0,9728; 0,7514) e LR (0,0648; 0,8716; 0,1206; 0,9677; 0,7022).
 - **Célula 56 (código)** — Relatório e matriz de confusão do XGBoost final no teste: `[[84932, 363], [22, 126]]` — 126 de 148 fraudes detectadas e 363 falsos alertas.
 - **Célula 57 (código)** — Gráfico de barras da comparação final.

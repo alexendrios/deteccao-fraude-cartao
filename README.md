@@ -26,17 +26,43 @@ Um modelo que sempre respondesse *normal* teria **99,8273% de acurácia** e, ain
 
 ## 3. Estrutura do repositório
 
-| Arquivo | Conteúdo |
+```text
+deteccao-fraude-cartao/
+├── .gitignore
+├── README.md
+├── requirements.txt
+├── notebooks/
+│   ├── deteccao_fraudes.ipynb
+│   └── observacoes_blocos.md
+└── images/
+    └── 13 figuras exportadas das saídas do notebook
+```
+
+| Caminho | Conteúdo |
 | :--- | :--- |
-| `README.md` | Este documento: problema, preparação, resultados, limiar, SHAP e auditoria. |
-| `notebooks/deteccao_fraudes.ipynb` | Notebook executado, com 66 células e saídas salvas (tabelas e curvas). |
-| `notebooks/observacoes_blocos.md` | Observação do que cada célula do notebook faz. |
+| `.gitignore` | Ignora `venv/`, caches do Python/Jupyter e arquivos `.csv` baixados. |
+| `README.md` | Este documento: problema, preparação, resultados, limiar, SHAP, estrutura e auditoria. |
+| `requirements.txt` | Versões fixadas do ambiente local (Python 3.13). |
+| `notebooks/deteccao_fraudes.ipynb` | Notebook com 66 células (48 de código e 18 de Markdown) e saídas salvas. |
+| `notebooks/observacoes_blocos.md` | Guia célula a célula do notebook, com índices a partir de 0. |
+| `images/` | Figuras exportadas do notebook; relação completa na Seção 11. |
+
+O CSV não é versionado: ele é lido diretamente pela URL e `*.csv` está no `.gitignore`. O diretório `venv/` existe localmente, mas também não é versionado.
 
 ## 4. Como executar
 
-1. Abra `notebooks/deteccao_fraudes.ipynb` no Google Colab ou em Jupyter local.
-2. Bibliotecas usadas: `pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`, `xgboost`, `shap` e `jupyter`.
-3. Execute todas as células em ordem (`Runtime > Run all`). É preciso acesso à internet para baixar o CSV pela URL.
+**Local (Python 3.13):**
+
+```bash
+python -m venv venv
+.\venv\Scripts\Activate.ps1   # PowerShell (Linux/macOS: source venv/bin/activate)
+python -m pip install -r requirements.txt
+jupyter notebook notebooks/deteccao_fraudes.ipynb
+```
+
+**Google Colab:** abra `notebooks/deteccao_fraudes.ipynb` e instale apenas o que faltar (`xgboost` e `shap`, normalmente).
+
+Em ambos os casos, execute as células em ordem (`Runtime > Run all`) e mantenha acesso à internet para baixar o CSV pela URL.
 
 ## 5. Preparação dos dados e Pipeline
 
@@ -156,8 +182,49 @@ O beeswarm mostra a direção e a magnitude das contribuições por transação.
 | Unificar as rodadas de avaliação | Atendido | Células 53–58 |
 | Limiar selecionado na validação, após o GridSearchCV, com o modelo otimizado | Atendido | Células 43–47 |
 | Importância das variáveis + SHAP | Atendido | Células 59–65 |
-| README com problema, preparação, modelos, limiar, SHAP e mudanças | Atendido | Este arquivo |
-| Saídas salvas (tabelas e curvas) | Atendido | 48 células de código executadas, 13 com imagens, nenhuma saída `error` |
-| Dataset fora do repositório | Atendido | Nenhum CSV do projeto no diretório |
-| Todo arquivo citado no README existe | Atendido | `README.md` e os dois arquivos de `notebooks/` |
-| Notebook roda do início ao fim | Atendido | Reexecutado integralmente, sem erros |
+| README com problema, preparação, modelos, limiar, SHAP, estrutura e mudanças | Atendido | Este arquivo |
+| Saídas salvas (tabelas e curvas) | Atendido | 66 células (48 de código / 18 de Markdown); 43 com contador de execução, 44 com saídas salvas, 13 figuras e nenhuma saída `error` |
+| Dataset fora do repositório | Atendido | Nenhum CSV versionado; `*.csv` está no `.gitignore` |
+| Ambiente e dependências documentados | Atendido | Seção 4 e `requirements.txt` |
+| Organização de pastas revisada | Atendido | Seção 3; `venv/`, caches e CSVs ignorados pelo `.gitignore` |
+| Todo arquivo citado no README existe | Atendido | `README.md`, `requirements.txt`, `.gitignore`, os dois arquivos de `notebooks/` e as 13 figuras de `images/` |
+| Notebook sem erros registrados | Atendido | Nenhuma saída `error` no arquivo salvo; reexecução exige internet para baixar o CSV |
+
+## 11. Organização, ambiente e figuras
+
+- `venv/`, `__pycache__/`, `.ipynb_checkpoints/` e `*.csv` ficam fora do controle de versão; apenas o código, as anotações, as dependências e as figuras são versionados.
+- `notebooks/observacoes_blocos.md` usa índices de célula a partir de 0, exatamente como o arquivo `.ipynb` salvo.
+- As figuras em `images/` são exportações das saídas do notebook. Se um gráfico mudar, ele deve ser reexportado para manter esta galeria sincronizada.
+- O arquivo de dispersão SHAP com as 10 variáveis mais importantes foi renomeado de `isualizando...` para `Visualizando a importância das features com SHAP (top 10).png`.
+
+### Exploração e preparação
+
+![Distribuição de transações normais x fraudulentas](<images/Distribuição de transações normais x fraudulentas.png>)
+
+![Distribuição dos valores das transações](<images/Distribuição dos valores das transações.png>)
+
+![Distribuição original dos valores](<images/Distribuição original dos valores.png>)
+
+![Comparando a distribuição antes e depois da transformação logarítmica](<images/Comparando a distribuição antes e depois da transformação logarítmica.png>)
+
+### Seleção e avaliação dos modelos
+
+![Visualizando as matrizes de confusão dos modelos na validação](<images/Visualizando as matrizes de confusão dos modelos na validação.png>)
+
+![Curva ROC - validação](<images/Curva ROC - validação.png>)
+
+![Curva Precision-Recall - validação](<images/Curva Precision-Recall - validação.png>)
+
+![Comparação das métricas por limiar (modelo otimizado)](<images/Comparação das métricas por limiar (modelo otimizado).png>)
+
+![Estratégias de balanceamento - validação](<images/Estratégias de balanceamento - validação.png>)
+
+![Comparação final dos modelos no teste](<images/Comparação final dos modelos no teste.png>)
+
+### Explicabilidade
+
+![Visualizando a importância das features com SHAP](<images/Visualizando a importância das features com SHAP.png>)
+
+![Visualizando a importância das features com SHAP (gráfico de dispersão)](<images/Visualizando a importância das features com SHAP (gráfico de dispersão).png>)
+
+![Visualizando a importância das features com SHAP (top 10)](<images/Visualizando a importância das features com SHAP (top 10).png>)

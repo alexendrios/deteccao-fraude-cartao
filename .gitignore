@@ -1,2 +1,10 @@
 # Ambiente virtual Python
 venv/
+
+# Cache e artefatos do Python/Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Dados brutos (baixados pela URL; não entram no repositório)
+*.csv
